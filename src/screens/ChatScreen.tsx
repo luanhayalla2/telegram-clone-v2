@@ -1,4 +1,4 @@
-﻿import React, { useRef, useCallback, useEffect, useState } from 'react';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -11,6 +11,7 @@ import MessageInput from '../components/MessageInput';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Avatar from '../components/Avatar';
 import useTheme from '../hooks/useTheme';
+import { useSettings } from '../context/SettingsContext';
 import { chatGetMessages } from '../services/chatApi';
 import { getChatSession } from '../services/chatSession';
 import { onReceiveMessage, sendMessageSocket } from '../services/chatSocket';
@@ -20,7 +21,10 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
 export default function ChatScreen({ navigation, route }: Props) {
   const { colors } = useTheme();
+  const { useShortNames, showNameAndPhoto } = useSettings();
   const { conversationId, userId: receiverId, name, avatar } = route.params;
+
+  const displayName = useShortNames ? name.split(' ')[0] : name;
 
   const flatListRef = useRef<FlatList>(null);
   const headerHeight = useHeaderHeight();
@@ -35,10 +39,10 @@ export default function ChatScreen({ navigation, route }: Props) {
     navigation.setOptions({
       headerTitle: () => (
         <View style={styles.headerTitleWrap}>
-          <Avatar name={name} size={38} uri={avatar ?? null} online={false} />
+          {showNameAndPhoto && <Avatar name={name} size={38} uri={avatar ?? null} online={false} />}
           <View style={styles.headerTextWrap}>
             <Text style={[styles.headerName, { color: colors.textPrimary }]} numberOfLines={1}>
-              {name}
+              {displayName}
             </Text>
             <Text style={[styles.headerStatus, { color: colors.textSecondary }]} numberOfLines={1}>
               via Chat API
@@ -168,7 +172,10 @@ export default function ChatScreen({ navigation, route }: Props) {
       const senderId = extractUserId(item.senderId);
       const isMine = !!myUserId && !!senderId && senderId === myUserId;
 
-      const senderName = !isMine ? extractUserName(item.senderId) || name : undefined;
+      let senderName = !isMine ? extractUserName(item.senderId) || name : undefined;
+      if (senderName && useShortNames) {
+        senderName = senderName.split(' ')[0];
+      }
       const text = item.text ? String(item.text) : item.mediaUrl ? '[Mídia]' : '';
       const timestamp = Math.floor(new Date(item.createdAt).getTime() / 1000);
 

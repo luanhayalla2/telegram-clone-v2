@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import useTheme from '../hooks/useTheme';
 
@@ -12,6 +11,9 @@ interface SettingRowProps {
   rightBadge?: string;
   onPress: () => void;
   isLast?: boolean;
+  hasSwitch?: boolean;
+  switchValue?: boolean;
+  onSwitchChange?: (value: boolean) => void;
 }
 
 export default function SettingRow({
@@ -23,14 +25,18 @@ export default function SettingRow({
   rightBadge,
   onPress,
   isLast = false,
+  hasSwitch = false,
+  switchValue = false,
+  onSwitchChange,
 }: SettingRowProps) {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
 
   return (
     <TouchableOpacity 
       style={[styles.container, { backgroundColor: colors.surface }]} 
-      onPress={onPress} 
-      activeOpacity={0.7}
+      onPress={hasSwitch ? undefined : onPress} 
+      activeOpacity={hasSwitch ? 1 : 0.7}
+      disabled={hasSwitch}
     >
       <View style={styles.row}>
         <View style={[styles.iconContainer, { backgroundColor: iconBgColor }]}> 
@@ -49,7 +55,18 @@ export default function SettingRow({
           )}
         </View>
         {rightBadge && <Text style={styles.badgeText}>{rightBadge}</Text>}
-        <Ionicons name="chevron-forward" size={16} color={colors.textSecondary} style={{ marginLeft: 8 }} />
+        
+        {hasSwitch ? (
+          <Switch
+            value={switchValue}
+            onValueChange={onSwitchChange}
+            trackColor={{ false: isDark ? '#3a3b40' : '#d1d1d6', true: '#34c759' }}
+            thumbColor="#fff"
+            ios_backgroundColor={isDark ? '#3a3b40' : '#d1d1d6'}
+          />
+        ) : (
+          <Ionicons name="chevron-forward" size={16} color={colors.textSecondary} style={{ marginLeft: 8 }} />
+        )}
       </View>
       {!isLast && <View style={[styles.divider, { backgroundColor: colors.separator }]} />}
     </TouchableOpacity>

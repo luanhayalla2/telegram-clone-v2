@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import useTheme from '../hooks/useTheme';
+import { useSettings } from '../context/SettingsContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface MessageBubbleProps {
@@ -19,6 +20,7 @@ export default function MessageBubble({
   status = 'delivered',
 }: MessageBubbleProps) {
   const { colors } = useTheme();
+  const { fontSize } = useSettings();
   
   const time = new Date(timestamp * 1000).toLocaleTimeString([], {
     hour: '2-digit',
@@ -40,7 +42,7 @@ export default function MessageBubble({
         )}
         
         <View style={styles.messageContent}>
-          <Text style={[styles.messageText, { color: colors.textPrimary }]}>
+          <Text style={[styles.messageText, { color: colors.textPrimary, fontSize }]}>
             {message}
             {/* 
                This is the secret: a nested View inside a Text element 
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     // No specific layout needed, let the Text handle it
   },
   messageText: {
-    fontSize: 16,
+    // fontSize: 16, // movido para estilo inline para usar o context
     lineHeight: 20,
   },
   timeInlineContainer: {

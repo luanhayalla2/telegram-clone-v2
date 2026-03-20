@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import useTheme from '../hooks/useTheme';
+import { useSettings } from '../context/SettingsContext';
 
 interface MessageInputProps {
   onSend: (text: string) => void;
@@ -13,6 +14,7 @@ interface MessageInputProps {
 export default function MessageInput({ onSend, onTyping, onStopTyping, placeholder = 'Mensagem' }: MessageInputProps) {
   const [text, setText] = useState('');
   const { colors } = useTheme();
+  const { enterToSend } = useSettings();
   const typingTimeoutRef = React.useRef<any>(null);
 
   const handleChangeText = (val: string) => {
@@ -59,7 +61,9 @@ export default function MessageInput({ onSend, onTyping, onStopTyping, placehold
           onChangeText={handleChangeText}
           placeholder={placeholder}
           placeholderTextColor={colors.textSecondary}
-          multiline
+          multiline={!enterToSend}
+          onSubmitEditing={enterToSend ? handleSend : undefined}
+          blurOnSubmit={enterToSend}
           maxLength={4096}
         />
         <TouchableOpacity activeOpacity={0.7} style={styles.trailingButton}>
