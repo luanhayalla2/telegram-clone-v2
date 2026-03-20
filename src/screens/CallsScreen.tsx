@@ -64,7 +64,7 @@ export default function CallsScreen() {
         </View>
       </View>
       <TouchableOpacity style={styles.infoButton}>
-        <Ionicons name="information-circle-outline" size={24} color={colors.primary} />
+        <Ionicons name="call-outline" size={24} color={colors.primary} />
       </TouchableOpacity>
     </TouchableOpacity>
   );

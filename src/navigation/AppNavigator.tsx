@@ -25,6 +25,14 @@ import DataStorageScreen from '../screens/DataStorageScreen';
 import HelpScreen from '../screens/HelpScreen';
 import FloatingBottomTab from '../components/FloatingBottomTab';
 
+// Novas Telas de Configurações
+import ChatFoldersScreen from '../screens/ChatFoldersScreen';
+import DevicesScreen from '../screens/DevicesScreen';
+import PowerSavingScreen from '../screens/PowerSavingScreen';
+import PremiumScreen from '../screens/PremiumScreen';
+import WalletScreen from '../screens/WalletScreen';
+import BusinessScreen from '../screens/BusinessScreen';
+
 function PlaceholderScreen({ route }: any) {
   const { colors } = useTheme();
   return (
@@ -99,13 +107,13 @@ export default function AppNavigator() {
         <Stack.Screen name="NewGroup" component={NewGroupScreen} options={{ title: 'Novo Grupo' }} />
         <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ title: 'Editar Perfil' }} />
         <Stack.Screen name="ChatSettings" component={SettingsScreen as any} options={{ title: 'Configuracoes de Chat' }} />
-        <Stack.Screen name="ChatFolders" component={PlaceholderScreen} options={{ title: 'Pastas de Chat' }} />
-        <Stack.Screen name="Devices" component={PlaceholderScreen} options={{ title: 'Dispositivos' }} />
-        <Stack.Screen name="PowerSaving" component={PlaceholderScreen} options={{ title: 'Economia de Energia' }} />
+        <Stack.Screen name="ChatFolders" component={ChatFoldersScreen} options={{ title: 'Pastas de Chat' }} />
+        <Stack.Screen name="Devices" component={DevicesScreen} options={{ title: 'Dispositivos' }} />
+        <Stack.Screen name="PowerSaving" component={PowerSavingScreen} options={{ title: 'Economia de Energia' }} />
         <Stack.Screen name="Language" component={LanguageScreen} options={{ title: 'Idioma' }} />
-        <Stack.Screen name="Premium" component={PlaceholderScreen} options={{ title: 'Telegram Premium' }} />
-        <Stack.Screen name="Wallet" component={PlaceholderScreen} options={{ title: 'Carteira' }} />
-        <Stack.Screen name="Business" component={PlaceholderScreen} options={{ title: 'Telegram Business' }} />
+        <Stack.Screen name="Premium" component={PremiumScreen} options={{ title: 'Telegram Premium' }} />
+        <Stack.Screen name="Wallet" component={WalletScreen} options={{ title: 'Carteira' }} />
+        <Stack.Screen name="Business" component={BusinessScreen} options={{ title: 'Telegram Business' }} />
         <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notificacoes' }} />
         <Stack.Screen name="Privacy" component={PrivacyScreen} options={{ title: 'Privacidade' }} />
         <Stack.Screen name="DataStorage" component={DataStorageScreen} options={{ title: 'Dados e Armazenamento' }} />
