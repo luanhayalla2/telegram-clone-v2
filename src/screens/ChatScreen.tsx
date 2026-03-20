@@ -21,11 +21,11 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
 export default function ChatScreen({ navigation, route }: Props) {
   const { colors } = useTheme();
-  const { useShortNames, showNameAndPhoto } = useSettings();
+  const { useShortNames, showNameAndPhoto, chatWallpaper } = useSettings();
   const { conversationId, userId: receiverId, name, avatar } = route.params;
 
   const displayName = useShortNames ? name.split(' ')[0] : name;
-
+  const wallpaperColor = chatWallpaper || colors.backgroundChat;
   const flatListRef = useRef<FlatList>(null);
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
@@ -196,10 +196,10 @@ export default function ChatScreen({ navigation, route }: Props) {
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.backgroundChat }]} edges={['bottom']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: wallpaperColor }]} edges={['bottom']}>
       {Platform.OS === 'ios' ? (
         <KeyboardAvoidingView behavior="padding" style={styles.flex} keyboardVerticalOffset={headerHeight}>
-          <View style={[styles.chatWallpaper, { backgroundColor: colors.backgroundChat }]} />
+          <View style={[styles.chatWallpaper, { backgroundColor: wallpaperColor }]} />
 
           <FlatList
             ref={flatListRef}
@@ -223,7 +223,7 @@ export default function ChatScreen({ navigation, route }: Props) {
         </KeyboardAvoidingView>
       ) : (
         <View style={[styles.flex, { paddingBottom: Math.max(0, keyboardHeight) }]}>
-          <View style={[styles.chatWallpaper, { backgroundColor: colors.backgroundChat }]} />
+          <View style={[styles.chatWallpaper, { backgroundColor: wallpaperColor }]} />
 
           <FlatList
             ref={flatListRef}
@@ -278,7 +278,6 @@ const styles = StyleSheet.create({
   },
   chatWallpaper: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#090b12',
   },
   headerTitleWrap: {
     flexDirection: 'row',

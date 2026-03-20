@@ -24,6 +24,8 @@ export default function SettingsScreen({ navigation }: Props) {
     setShowNameAndPhoto,
     useShortNames,
     setUseShortNames,
+    chatWallpaper,
+    setChatWallpaper,
   } = useSettings();
 
   const handleFontSizeChange = () => {
@@ -35,6 +37,21 @@ export default function SettingsScreen({ navigation }: Props) {
         { text: 'Padrão (16pt)', onPress: () => setFontSize(16) },
         { text: 'Grande (18pt)', onPress: () => setFontSize(18) },
         { text: 'Extra Grande (20pt)', onPress: () => setFontSize(20) },
+        { text: 'Cancelar', style: 'cancel' },
+      ]
+    );
+  };
+
+  const handleWallpaperChange = () => {
+    Alert.alert(
+      'Papel de Parede',
+      'Escolha uma cor de fundo para os seus chats:',
+      [
+        { text: 'Padrão (Escuro)', onPress: () => setChatWallpaper('') },
+        { text: 'Azul Celeste', onPress: () => setChatWallpaper('#0E1621') },
+        { text: 'Verde Floresta', onPress: () => setChatWallpaper('#1E2C1E') },
+        { text: 'Vinho', onPress: () => setChatWallpaper('#2C1E1E') },
+        { text: 'Roxo Deep', onPress: () => setChatWallpaper('#1E1E2C') },
         { text: 'Cancelar', style: 'cancel' },
       ]
     );
@@ -66,7 +83,7 @@ export default function SettingsScreen({ navigation }: Props) {
               iconName="image" 
               iconBgColor="#34C759" 
               label="Papel de Parede do Chat" 
-              onPress={() => Alert.alert('Papel de Parede', 'Esta funcionalidade será adicionada em breve.')} 
+              onPress={handleWallpaperChange} 
               isLast 
             />
           </View>

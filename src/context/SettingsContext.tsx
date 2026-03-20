@@ -23,6 +23,8 @@ interface SettingsContextType {
   setShowNameAndPhoto: (value: boolean) => void;
   useShortNames: boolean;
   setUseShortNames: (value: boolean) => void;
+  chatWallpaper: string;
+  setChatWallpaper: (value: string) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -34,6 +36,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   // States para Configurações de Chat
   const [enterToSend, setEnterToSendState] = useState(false);
   const [fontSize, setFontSizeState] = useState(16);
+  const [chatWallpaper, setChatWallpaperState] = useState(''); // Empty means default theme color
   const [autoPlayGifs, setAutoPlayGifsState] = useState(true);
   const [autoPlayVideos, setAutoPlayVideosState] = useState(true);
   const [showNameAndPhoto, setShowNameAndPhotoState] = useState(true);
@@ -53,6 +56,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       const savedAutoVideos = await AsyncStorage.getItem('chat_auto_videos');
       const savedShowNamePhoto = await AsyncStorage.getItem('chat_show_name_photo');
       const savedShortNames = await AsyncStorage.getItem('chat_short_names');
+      const savedWallpaper = await AsyncStorage.getItem('chat_wallpaper');
 
       if (savedTheme) setTheme(savedTheme as Theme);
       if (savedLang) setLanguageState(savedLang as Language);
@@ -62,6 +66,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       if (savedAutoVideos !== null) setAutoPlayVideosState(savedAutoVideos === 'true');
       if (savedShowNamePhoto !== null) setShowNameAndPhotoState(savedShowNamePhoto === 'true');
       if (savedShortNames !== null) setUseShortNamesState(savedShortNames === 'true');
+      if (savedWallpaper) setChatWallpaperState(savedWallpaper);
     } catch (e) {
       console.error('Erro ao carregar configurações:', e);
     }
@@ -109,6 +114,11 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     await AsyncStorage.setItem('chat_short_names', String(value));
   };
 
+  const setChatWallpaper = async (value: string) => {
+    setChatWallpaperState(value);
+    await AsyncStorage.setItem('chat_wallpaper', value);
+  };
+
   return (
     <SettingsContext.Provider 
       value={{ 
@@ -127,7 +137,9 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         showNameAndPhoto,
         setShowNameAndPhoto,
         useShortNames,
-        setUseShortNames
+        setUseShortNames,
+        chatWallpaper,
+        setChatWallpaper
       }}
     >
       {children}
