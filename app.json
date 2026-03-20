@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "telegram-clone",
-    "slug": "telegram-clone",
+    "name": "telegram-clone-v2",
+    "slug": "telegram-clone-v2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
