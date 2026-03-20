@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Modal, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
@@ -10,7 +10,7 @@ import { useSettings } from '../context/SettingsContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChatSettings'>;
 
 export default function SettingsScreen({ navigation }: Props) {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const {
     enterToSend,
     setEnterToSend,
@@ -28,34 +28,23 @@ export default function SettingsScreen({ navigation }: Props) {
     setChatWallpaper,
   } = useSettings();
 
-  const handleFontSizeChange = () => {
-    Alert.alert(
-      'Tamanho do Texto',
-      'Escolha o tamanho das mensagens no chat:',
-      [
-        { text: 'Pequeno (14pt)', onPress: () => setFontSize(14) },
-        { text: 'Padrão (16pt)', onPress: () => setFontSize(16) },
-        { text: 'Grande (18pt)', onPress: () => setFontSize(18) },
-        { text: 'Extra Grande (20pt)', onPress: () => setFontSize(20) },
-        { text: 'Cancelar', style: 'cancel' },
-      ]
-    );
-  };
+  const [fontSizeModalVisible, setFontSizeModalVisible] = useState(false);
+  const [wallpaperModalVisible, setWallpaperModalVisible] = useState(false);
 
-  const handleWallpaperChange = () => {
-    Alert.alert(
-      'Papel de Parede',
-      'Escolha uma cor de fundo para os seus chats:',
-      [
-        { text: 'Padrão (Escuro)', onPress: () => setChatWallpaper('') },
-        { text: 'Azul Celeste', onPress: () => setChatWallpaper('#0E1621') },
-        { text: 'Verde Floresta', onPress: () => setChatWallpaper('#1E2C1E') },
-        { text: 'Vinho', onPress: () => setChatWallpaper('#2C1E1E') },
-        { text: 'Roxo Deep', onPress: () => setChatWallpaper('#1E1E2C') },
-        { text: 'Cancelar', style: 'cancel' },
-      ]
-    );
-  };
+  const fontOptions = [
+    { label: 'Pequeno (14pt)', value: 14 },
+    { label: 'Padrão (16pt)', value: 16 },
+    { label: 'Grande (18pt)', value: 18 },
+    { label: 'Extra Grande (20pt)', value: 20 },
+  ];
+
+  const wallpaperOptions = [
+    { label: 'Padrão (Escuro)', value: '' },
+    { label: 'Azul Celeste', value: '#0E1621' },
+    { label: 'Verde Floresta', value: '#1E2C1E' },
+    { label: 'Vinho', value: '#2C1E1E' },
+    { label: 'Roxo Deep', value: '#1E1E2C' },
+  ];
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['bottom']}>
@@ -77,13 +66,13 @@ export default function SettingsScreen({ navigation }: Props) {
               iconBgColor="#F7931A" 
               label="Tamanho do Texto" 
               subtitle={`${fontSize}pt`} 
-              onPress={handleFontSizeChange} 
+              onPress={() => setFontSizeModalVisible(true)} 
             />
             <SettingRow 
               iconName="image" 
               iconBgColor="#34C759" 
               label="Papel de Parede do Chat" 
-              onPress={handleWallpaperChange} 
+              onPress={() => setWallpaperModalVisible(true)} 
               isLast 
             />
           </View>
@@ -139,6 +128,63 @@ export default function SettingsScreen({ navigation }: Props) {
           </View>
         </View>
       </ScrollView>
+
+      {/* Font Size Modal */}
+      <Modal visible={fontSizeModalVisible} transparent animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: colors.surface }]}>
+            <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>Tamanho do Texto</Text>
+            {fontOptions.map((opt) => (
+              <TouchableOpacity
+                key={opt.value}
+                style={[styles.modalOption, fontSize === opt.value && { backgroundColor: colors.background }]}
+                onPress={() => {
+                  setFontSize(opt.value);
+                  setFontSizeModalVisible(false);
+                }}
+              >
+                <Text style={[styles.modalOptionText, { color: colors.textPrimary }]}>{opt.label}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              style={styles.modalCancel}
+              onPress={() => setFontSizeModalVisible(false)}
+            >
+              <Text style={styles.modalCancelText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Wallpaper Modal */}
+      <Modal visible={wallpaperModalVisible} transparent animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: colors.surface }]}>
+            <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>Papel de Parede do Chat</Text>
+            {wallpaperOptions.map((opt) => (
+              <TouchableOpacity
+                key={opt.label}
+                style={[styles.modalOption, chatWallpaper === opt.value && { backgroundColor: colors.background }]}
+                onPress={() => {
+                  setChatWallpaper(opt.value);
+                  setWallpaperModalVisible(false);
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={[styles.colorPreview, { backgroundColor: opt.value || '#0a0b10', borderWidth: opt.value ? 0 : 1, borderColor: colors.separator }]} />
+                  <Text style={[styles.modalOptionText, { color: colors.textPrimary }]}>{opt.label}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              style={styles.modalCancel}
+              onPress={() => setWallpaperModalVisible(false)}
+            >
+              <Text style={styles.modalCancelText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -148,4 +194,49 @@ const styles = StyleSheet.create({
   section: { marginTop: 20 },
   sectionTitle: { fontSize: 13, fontWeight: 'bold', marginLeft: 16, marginBottom: 8 },
   card: { marginHorizontal: 16, borderRadius: 12, overflow: 'hidden' },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    width: '100%',
+    maxWidth: 340,
+    borderRadius: 14,
+    overflow: 'hidden',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#3A3B40',
+  },
+  modalOption: {
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#3A3B40',
+  },
+  modalOptionText: {
+    fontSize: 16,
+  },
+  modalCancel: {
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
+  modalCancelText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#007AFF',
+  },
+  colorPreview: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    marginRight: 12,
+  },
 });

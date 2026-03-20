@@ -31,12 +31,19 @@ export default function SettingRow({
 }: SettingRowProps) {
   const { colors, isDark } = useTheme();
 
+  const handlePress = () => {
+    if (hasSwitch && onSwitchChange) {
+      onSwitchChange(!switchValue);
+    } else if (onPress) {
+      onPress();
+    }
+  };
+
   return (
     <TouchableOpacity 
       style={[styles.container, { backgroundColor: colors.surface }]} 
-      onPress={hasSwitch ? undefined : onPress} 
-      activeOpacity={hasSwitch ? 1 : 0.7}
-      disabled={hasSwitch}
+      onPress={handlePress} 
+      activeOpacity={0.7}
     >
       <View style={styles.row}>
         <View style={[styles.iconContainer, { backgroundColor: iconBgColor }]}> 
