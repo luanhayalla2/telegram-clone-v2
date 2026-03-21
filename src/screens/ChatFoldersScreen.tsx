@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import useTheme from '../hooks/useTheme';
@@ -7,6 +7,8 @@ import SettingRow from '../components/SettingRow';
 
 export default function ChatFoldersScreen() {
   const { colors } = useTheme();
+
+  const handleCreateFolder = () => Alert.alert('Nova Pasta', 'Nesta tela você poderá definir regras para a nova pasta (ex: Apenas não lidos).');
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['bottom']}>
@@ -22,15 +24,15 @@ export default function ChatFoldersScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.primary }]}>SUAS PASTAS</Text>
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow iconName="list" iconBgColor="#007AFF" label="Todos os Chats" subtitle="Pasta padrão" onPress={() => {}} />
-            <SettingRow iconName="star" iconBgColor="#F7931A" label="Favoritos" subtitle="0 chats" onPress={() => {}} isLast />
+            <SettingRow iconName="list" iconBgColor="#007AFF" label="Todos os Chats" subtitle="Pasta padrão" onPress={() => Alert.alert('Todos os Chats', 'Esta é a pasta principal inamovível.')} />
+            <SettingRow iconName="star" iconBgColor="#F7931A" label="Favoritos" subtitle="0 chats" onPress={() => Alert.alert('Favoritos', 'Sem chats favoritos no momento.')} isLast />
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.primary }]}>RECOMENDADAS</Text>
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow iconName="add-circle" iconBgColor="#34C759" label="Criar Nova Pasta" onPress={() => {}} isLast />
+            <SettingRow iconName="add-circle" iconBgColor="#34C759" label="Criar Nova Pasta" onPress={handleCreateFolder} isLast />
           </View>
         </View>
       </ScrollView>

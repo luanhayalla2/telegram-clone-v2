@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import useTheme from '../hooks/useTheme';
@@ -7,6 +7,17 @@ import SettingRow from '../components/SettingRow';
 
 export default function DevicesScreen() {
   const { colors } = useTheme();
+
+  const handleTerminateAll = () => Alert.alert('Encerrar Sessões', 'Tem certeza que deseja encerrar as outras sessões da sua conta? Você será deslogado nelas.', [
+    { text: 'Cancelar', style: 'cancel' },
+    { text: 'Encerrar', style: 'destructive', onPress: () => Alert.alert('Sucesso', 'Sessões encerradas.') }
+  ]);
+
+  const handleTerminateSpecific = (app: string) => Alert.alert('Encerrar Sessão', `Deseja deslogar de ${app}?`, [
+    { text: 'Cancelar', style: 'cancel' },
+    { text: 'Sim, Encerrar', style: 'destructive' }
+  ]);
+
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['bottom']}>
@@ -22,20 +33,20 @@ export default function DevicesScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.primary }]}>ESTE DISPOSITIVO</Text>
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow iconName="phone-portrait" iconBgColor="#34C759" label="iPhone 13 (Este)" subtitle="Online • Visto agora" onPress={() => {}} isLast />
+            <SettingRow iconName="phone-portrait" iconBgColor="#34C759" label="iPhone 13 (Este)" subtitle="Online • Visto agora" onPress={() => Alert.alert('Sessão Atual', 'Seu dispositivo atual.')} isLast />
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.primary }]}>SESSÕES ATIVAS</Text>
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow iconName="desktop" iconBgColor="#007AFF" label="Telegram Desktop" subtitle="São Paulo, Brasil • Ontem" onPress={() => {}} />
-            <SettingRow iconName="globe" iconBgColor="#64D2FF" label="Telegram Web" subtitle="Rio de Janeiro, Brasil • 2 dias atrás" onPress={() => {}} isLast />
+            <SettingRow iconName="desktop" iconBgColor="#007AFF" label="Telegram Desktop" subtitle="São Paulo, Brasil • Ontem" onPress={() => handleTerminateSpecific('Telegram Desktop')} />
+            <SettingRow iconName="globe" iconBgColor="#64D2FF" label="Telegram Web" subtitle="Rio de Janeiro, Brasil • 2 dias atrás" onPress={() => handleTerminateSpecific('Telegram Web')} isLast />
           </View>
         </View>
 
         <View style={styles.section}>
-          <TouchableOpacity style={styles.logoutAll}>
+          <TouchableOpacity style={styles.logoutAll} onPress={handleTerminateAll}>
             <Text style={{ color: '#FF3B30', fontSize: 16, fontWeight: '600' }}>Encerrar Todas as Outras Sessões</Text>
           </TouchableOpacity>
         </View>

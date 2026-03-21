@@ -4,9 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import useTheme from '../hooks/useTheme';
 import SettingRow from '../components/SettingRow';
+import { usePersistedState } from '../hooks/usePersistedState';
 
 export default function PowerSavingScreen() {
   const { colors } = useTheme();
+
+  const [powerAuto, setPowerAuto] = usePersistedState<boolean>('power_auto', false);
+  const [animations, setAnimations] = usePersistedState<boolean>('power_anim', true);
+  const [syncBg, setSyncBg] = usePersistedState<boolean>('power_sync', true);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['bottom']}>
@@ -22,9 +27,19 @@ export default function PowerSavingScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.primary }]}>OPÇÕES</Text>
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow iconName="flash" iconBgColor="#FF9500" label="Modo Econômico Auto" subtitle="Ativar abaixo de 20%" onPress={() => {}} />
-            <SettingRow iconName="film" iconBgColor="#AF52DE" label="Desativar Animações" subtitle="Ativado" onPress={() => {}} />
-            <SettingRow iconName="sync" iconBgColor="#007AFF" label="Sincronização em Segundo Plano" subtitle="Limitada" onPress={() => {}} isLast />
+            <SettingRow 
+              iconName="flash" iconBgColor="#FF9500" label="Modo Econômico Auto" subtitle="Ativar abaixo de 20%" 
+              hasSwitch switchValue={powerAuto} onSwitchChange={setPowerAuto} onPress={() => {}}
+            />
+            <SettingRow 
+              iconName="film" iconBgColor="#AF52DE" label="Desativar Animações" subtitle={animations ? 'Animações ativadas' : 'Animações desativadas'}
+              hasSwitch switchValue={animations} onSwitchChange={setAnimations} onPress={() => {}}
+            />
+            <SettingRow 
+              iconName="sync" iconBgColor="#007AFF" label="Sincronização em Segundo Plano" subtitle={syncBg ? 'Permitida' : 'Limitada'}
+              hasSwitch switchValue={syncBg} onSwitchChange={setSyncBg} onPress={() => {}} 
+              isLast 
+            />
           </View>
         </View>
       </ScrollView>

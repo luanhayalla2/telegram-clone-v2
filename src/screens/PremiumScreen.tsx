@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import useTheme from '../hooks/useTheme';
@@ -22,13 +22,16 @@ export default function PremiumScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.primary }]}>RECURSOS</Text>
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow iconName="infinite" iconBgColor="#FF9500" label="Limites Dobrados" subtitle="Até 1000 canais, 20 pastas" onPress={() => {}} />
-            <SettingRow iconName="cloud-upload" iconBgColor="#007AFF" label="Upload de 4 GB" subtitle="Tamanho máximo de arquivo" onPress={() => {}} />
-            <SettingRow iconName="speedometer" iconBgColor="#34C759" label="Velocidades de Download" subtitle="Sem limites de velocidade" onPress={() => {}} isLast />
+            <SettingRow iconName="infinite" iconBgColor="#FF9500" label="Limites Dobrados" subtitle="Até 1000 canais, 20 pastas" onPress={() => Alert.alert('Limites Dobrados', 'Você poderá participar de até 1000 canais.')} />
+            <SettingRow iconName="cloud-upload" iconBgColor="#007AFF" label="Upload de 4 GB" subtitle="Tamanho máximo de arquivo" onPress={() => Alert.alert('Upload de 4GB', 'Envie vídeos e arquivos gigantescentes.')} />
+            <SettingRow iconName="speedometer" iconBgColor="#34C759" label="Velocidades de Download" subtitle="Sem limites de velocidade" onPress={() => Alert.alert('Download Rápido', 'Acesse mídias sem estrangulamento de banda.')} isLast />
           </View>
         </View>
 
-        <TouchableOpacity style={[styles.subscribeButton, { backgroundColor: colors.primary }]}>
+        <TouchableOpacity 
+          style={[styles.subscribeButton, { backgroundColor: colors.primary }]}
+          onPress={() => Alert.alert('Assinar Premium', 'Redirecionando para a loja de aplicativos...')}
+        >
           <Text style={styles.subscribeText}>Assinar por R$ 19,90 / mês</Text>
         </TouchableOpacity>
       </ScrollView>

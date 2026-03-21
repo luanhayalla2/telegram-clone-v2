@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import useTheme from '../hooks/useTheme';
@@ -24,7 +24,10 @@ export default function WalletScreen() {
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
             <View style={styles.balanceRow}>
               <Text style={[styles.balanceValue, { color: colors.textPrimary }]}>0.00 USD</Text>
-              <TouchableOpacity style={[styles.addFunds, { backgroundColor: colors.primary }]}>
+              <TouchableOpacity 
+                style={[styles.addFunds, { backgroundColor: colors.primary }]}
+                onPress={() => Alert.alert('Adicionar Fundos', 'Integração de pagamento será adicionada em breve.')}
+              >
                 <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Adicionar</Text>
               </TouchableOpacity>
             </View>
@@ -34,8 +37,8 @@ export default function WalletScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.primary }]}>CRYPTO</Text>
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow iconName="logo-bitcoin" iconBgColor="#F7931A" label="Bitcoin" subtitle="BTC" onPress={() => {}} />
-            <SettingRow iconName="diamond" iconBgColor="#34C759" label="TON Space" subtitle="TON" onPress={() => {}} isLast />
+            <SettingRow iconName="logo-bitcoin" iconBgColor="#F7931A" label="Bitcoin" subtitle="BTC • R$ 340.000" onPress={() => Alert.alert('Bitcoin', 'Compre, venda e negocie Bitcoin.')} />
+            <SettingRow iconName="diamond" iconBgColor="#34C759" label="TON Space" subtitle="TON • R$ 35" onPress={() => Alert.alert('TON', 'Blockchain nativa do Telegram.')} isLast />
           </View>
         </View>
       </ScrollView>

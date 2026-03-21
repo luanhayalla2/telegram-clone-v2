@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useTheme from '../hooks/useTheme';
@@ -22,9 +22,9 @@ export default function BusinessScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.primary }]}>FERRAMENTAS</Text>
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow iconType="MaterialCommunityIcons" iconName="map-marker" iconBgColor="#5856D6" label="Localização" subtitle="Adicione seu endereço" onPress={() => {}} />
-            <SettingRow iconType="MaterialCommunityIcons" iconName="clock-outline" iconBgColor="#34C759" label="Horário de Funcionamento" subtitle="Defina seus horários" onPress={() => {}} />
-            <SettingRow iconType="MaterialCommunityIcons" iconName="message-flash" iconBgColor="#007AFF" label="Respostas Rápidas" subtitle="Crie atalhos para mensagens" onPress={() => {}} isLast />
+            <SettingRow iconType="MaterialCommunityIcons" iconName="map-marker" iconBgColor="#5856D6" label="Localização" subtitle="Adicione seu endereço" onPress={() => Alert.alert('Localização', 'Abrirá o mapa para selecionar seu endereço oficial.')} />
+            <SettingRow iconType="MaterialCommunityIcons" iconName="clock-outline" iconBgColor="#34C759" label="Horário de Funcionamento" subtitle="Defina seus horários" onPress={() => Alert.alert('Horários', 'Abriremos um gerenciador de horários em breve.')} />
+            <SettingRow iconType="MaterialCommunityIcons" iconName="message-flash" iconBgColor="#007AFF" label="Respostas Rápidas" subtitle="Crie atalhos para mensagens" onPress={() => Alert.alert('Respostas Rápidas', 'Atalhos configurados salvam muito tempo de digitação.')} isLast />
           </View>
         </View>
       </ScrollView>

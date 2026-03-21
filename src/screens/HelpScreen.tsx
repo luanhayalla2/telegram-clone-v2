@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Linking, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useTheme from '../hooks/useTheme';
 import SettingRow from '../components/SettingRow';
@@ -23,13 +23,13 @@ export default function HelpScreen() {
               iconName="chatbubble-ellipses" 
               iconBgColor="#34C759" 
               label="Fazer uma Pergunta" 
-              onPress={() => {}} 
+              onPress={() => Alert.alert('Suporte', 'Você será redirecionado para o chat de suporte.')} 
             />
             <SettingRow 
               iconName="shield-checkmark" 
               iconBgColor="#F7931A" 
               label="Política de Privacidade" 
-              onPress={() => {}} 
+              onPress={() => Linking.openURL('https://telegram.org/privacy')} 
               isLast 
             />
           </View>
@@ -38,8 +38,20 @@ export default function HelpScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.primary }]}>SOBRE</Text>
           <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow iconName="information-circle" iconBgColor="#AF52DE" label="Versão do Aplicativo" subtitle="v1.0.0" onPress={() => {}} />
-            <SettingRow iconName="code-working" iconBgColor="#5856D6" label="Código Fonte" onPress={() => {}} isLast />
+            <SettingRow 
+              iconName="information-circle" 
+              iconBgColor="#AF52DE" 
+              label="Versão do Aplicativo" 
+              subtitle="v2.0.0 (Telegram Clone)" 
+              onPress={() => Alert.alert('Versão', 'Telegram Clone v2.0.0\nCriada durante o projeto.')} 
+            />
+            <SettingRow 
+              iconName="code-working" 
+              iconBgColor="#5856D6" 
+              label="Código Fonte" 
+              onPress={() => Linking.openURL('https://github.com')} 
+              isLast 
+            />
           </View>
         </View>
       </ScrollView>
